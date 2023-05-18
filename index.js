@@ -86,7 +86,7 @@ async function run() {
           price: 1,
           quantity: 1,
           seller_name: 1,
-          seller_name: 1,
+          seller_email: 1,
           toy_name: 1,
         },
       };
@@ -108,6 +108,14 @@ async function run() {
           status: false,
         });
       }
+    });
+
+    // toy delete
+    app.delete("/deleteToy/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await toyCollection.deleteOne(query);
+      res.send(result);
     });
   } finally {
     // Ensures that the client will close when you finish/error
