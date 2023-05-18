@@ -32,6 +32,15 @@ async function run() {
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
 
+    // all toys get
+    app.get("/allToys", async (req, res) => {
+      const toys = await toyCollection
+        .find({})
+        .sort({ createdAt: -1 })
+        .toArray();
+      res.send(toys);
+    });
+
     // add toy post
     app.post("/addToy", async (req, res) => {
       const toy = req.body;
