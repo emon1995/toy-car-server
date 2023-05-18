@@ -24,11 +24,29 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     // client.connect();
+    // db
+    const toyCollection = client.db("carsToyDB").collection("cars");
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
+
+    // add toy post
+    app.post("/addToy", async (req, res) => {
+      const toy = req.body;
+      toy.createdAt = new Date();
+      //   console.log(toy);
+      const result = await toyCollection.insertOne(toy);
+      if (result?.insertedId) {
+        return res.status(200).send(result);
+      } else {
+        return res.status(404).send({
+          message: "can not insert try again later",
+          status: false,
+        });
+      }
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
