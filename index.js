@@ -111,6 +111,19 @@ async function run() {
       }
     });
 
+    // sub category get
+    app.get("/allToysSubCategory", async (req, res) => {
+      const { filterBy, name } = req.query;
+      //   console.log(filterBy, name);
+      let query = {
+        sub_Category: {
+          $elemMatch: { value: name },
+        },
+      };
+      const result = await toyCollection.find(query).toArray();
+      res.send(result);
+    });
+
     // add toy post
     app.post("/addToy", async (req, res) => {
       const toy = req.body;
