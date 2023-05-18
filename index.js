@@ -26,6 +26,11 @@ async function run() {
     // client.connect();
     // db
     const toyCollection = client.db("carsToyDB").collection("cars");
+    // indexing
+    const indexKeys = { toy_name: 1 };
+    const indexOptions = { name: "toy_name" };
+    const result = await toyCollection.createIndex(indexKeys, indexOptions);
+    console.log(result);
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
@@ -61,6 +66,15 @@ async function run() {
       };
       const toy = await toyCollection.findOne(query, options);
       res.send(toy);
+    });
+
+    // search toy get
+    app.get("/searchToy/:text", async (req, res) => {
+      const text = req.params.text;
+      const result = await toyCollection
+        .find({ toy_name: { $regex: text, $options: "i" } })
+        .toArray();
+      res.send(result);
     });
 
     // add toy post
