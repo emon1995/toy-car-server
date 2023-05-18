@@ -34,11 +34,33 @@ async function run() {
 
     // all toys get
     app.get("/allToys", async (req, res) => {
+      const query = {};
+      const options = {
+        projection: {
+          price: 1,
+          quantity: 1,
+          seller_name: 1,
+          sub_Category: 1,
+          toy_name: 1,
+        },
+      };
       const toys = await toyCollection
-        .find({})
+        .find(query, options)
         .sort({ createdAt: -1 })
+        .limit(20)
         .toArray();
       res.send(toys);
+    });
+
+    // single toy get
+    app.get("/toy/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const options = {
+        projection: { category: 0, sub_Category: 0 },
+      };
+      const toy = await toyCollection.findOne(query, options);
+      res.send(toy);
     });
 
     // add toy post
