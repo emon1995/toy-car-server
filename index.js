@@ -47,6 +47,7 @@ async function run() {
           seller_name: 1,
           sub_Category: 1,
           toy_name: 1,
+          photo: 1,
         },
       };
       const toys = await toyCollection
@@ -92,6 +93,22 @@ async function run() {
       };
       const toys = await toyCollection.find(query, options).toArray();
       res.send(toys);
+    });
+
+    // category & sub category get
+    app.get("/allToysCategory/:category", async (req, res) => {
+      const category = req.params.category;
+      if (category) {
+        const result = await toyCollection
+          .find({ category: category })
+          .toArray();
+        return res.send(result);
+      } else {
+        return res.status(404).send({
+          message: "can not get try again later",
+          status: false,
+        });
+      }
     });
 
     // add toy post
