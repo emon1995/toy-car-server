@@ -23,7 +23,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    // client.connect();
+    client.connect();
     // db
     const toyCollection = client.db("carsToyDB").collection("cars");
     // indexing
@@ -32,7 +32,7 @@ async function run() {
     const result = await toyCollection.createIndex(indexKeys, indexOptions);
     console.log(result);
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
@@ -81,6 +81,7 @@ async function run() {
     // user email toy get
     app.get("/myToys/:email", async (req, res) => {
       const email = req.params.email;
+      const price = req.query.sort;
       const query = { seller_email: email };
       const options = {
         projection: {
@@ -91,8 +92,23 @@ async function run() {
           toy_name: 1,
         },
       };
-      const toys = await toyCollection.find(query, options).toArray();
-      res.send(toys);
+
+      if (price === "asc") {
+        const result = await toyCollection
+          .find(query, options)
+          .sort({ price: 1 })
+          .toArray();
+        return res.send(result);
+      } else if (price === "dsc") {
+        const result = await toyCollection
+          .find(query, options)
+          .sort({ price: -1 })
+          .toArray();
+        return res.send(result);
+      }
+
+      // const toys = await toyCollection.find(query, options).toArray();
+      // res.send(toys);
     });
 
     // category & sub category get
