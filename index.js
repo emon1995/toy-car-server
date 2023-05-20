@@ -116,7 +116,7 @@ async function run() {
       const subCategory = req.params.subCategory;
       if (subCategory) {
         const result = await toyCollection
-          .find({ category: subCategory })
+          .find({ sub_category: subCategory })
           .toArray();
         return res.send(result);
       } else {
