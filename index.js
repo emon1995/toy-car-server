@@ -112,11 +112,11 @@ async function run() {
     });
 
     // category & sub category get
-    app.get("/allToysCategory/:category", async (req, res) => {
-      const category = req.params.category;
-      if (category) {
+    app.get("/allToysSubCategory/:subCategory", async (req, res) => {
+      const subCategory = req.params.subCategory;
+      if (subCategory) {
         const result = await toyCollection
-          .find({ category: category })
+          .find({ category: subCategory })
           .toArray();
         return res.send(result);
       } else {
@@ -128,17 +128,17 @@ async function run() {
     });
 
     // sub category get
-    app.get("/allToysSubCategory", async (req, res) => {
-      const { filterBy, name } = req.query;
-      //   console.log(filterBy, name);
-      let query = {
-        sub_Category: {
-          $elemMatch: { value: name },
-        },
-      };
-      const result = await toyCollection.find(query).toArray();
-      res.send(result);
-    });
+    // app.get("/allToysSubCategory", async (req, res) => {
+    //   const { filterBy, name } = req.query;
+    //   //   console.log(filterBy, name);
+    //   let query = {
+    //     sub_Category: {
+    //       $elemMatch: { value: name },
+    //     },
+    //   };
+    //   const result = await toyCollection.find(query).toArray();
+    //   res.send(result);
+    // });
 
     // add toy post
     app.post("/addToy", async (req, res) => {
