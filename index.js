@@ -107,8 +107,8 @@ async function run() {
         return res.send(result);
       }
 
-      // const toys = await toyCollection.find(query, options).toArray();
-      // res.send(toys);
+      const toys = await toyCollection.find(query, options).toArray();
+      res.send(toys);
     });
 
     // category & sub category get
