@@ -45,7 +45,7 @@ async function run() {
           price: 1,
           quantity: 1,
           seller_name: 1,
-          sub_Category: 1,
+          sub_category: 1,
           toy_name: 1,
           photo: 1,
         },
